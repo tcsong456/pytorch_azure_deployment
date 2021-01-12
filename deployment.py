@@ -1,7 +1,6 @@
 import json
 from azureml.core.authentication import ServicePrincipalAuthentication
-from azureml.core import Workspace,Model,Environment
-from azureml.core.model import InferenceConfig
+from azureml.core.model import InferenceConfig,Model
 from azureml.core.webservice import AksWebservice
 from azureml.core.compute import AksCompute,ComputeTarget
 from azureml.exceptions import ComputeTargetException
@@ -65,8 +64,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-    
-    
-    
 #%%
+

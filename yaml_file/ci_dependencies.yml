@@ -7,4 +7,5 @@ dependencies:
     - azureml-sdk
     - azure-storage-blob
     - azure-cli==2.3.*
+    - azureml-defaults
 
