@@ -11,3 +11,4 @@ dependencies:
     - azure-cli
     - torchvision
     - opencv-python-headless
+    - azureml-defaults
