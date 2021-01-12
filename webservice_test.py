@@ -46,9 +46,15 @@ def main():
     df = pd.DataFrame.from_dict(info,orient='columns')
     del_index = df[df.image_id == 'desktop.ini'].index[0]
     df.drop([del_index],inplace=True)
+    
+    input_data = []
+    for _,row in df.iterrows():
+        input_data.append([row['split'],row['class'],row['image_id']])
+    json_data = json.dump({'data':input_data})
+    json_data = bytes(json_data,encoding='utf-8')
 
     try:
-        preds = aks_service.run(df)
+        preds = aks_service.run(json_data)
         print(preds)
     except Exception as error:
         print(error)
@@ -57,19 +63,5 @@ def main():
 if __name__ == '__main__':
     main()
     #%%
-#from azureml.core import Workspace
-#from azureml.core.webservice import AksWebservice
-#ws = Workspace.get(name='aml-workspace',
-#                   subscription_id='64c727c2-4f98-4ef1-a45f-09eb33c1bd59',
-#                   resource_group='aml-resource-group')
-#service = AksWebservice(ws,'pytorch1')
-#%%
-#from azureml.core.model import Model
-#import torch
-#model = Model(name='pytorch_model.pt',
-#              version='9',
-#              workspace=ws)
-#model_path = Model.get_model_path(model_name=model.name,
-#                                  version=model.version,
-#                                  _workspace=ws)
-#model = torch.load(model_path)
+
+

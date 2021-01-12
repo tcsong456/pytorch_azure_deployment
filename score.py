@@ -6,6 +6,8 @@ import albumentations as A
 from albumentations.pytorch import ToTensor
 from torch.utils import data
 import cv2
+import json
+import pandas as pd
 
 class ImageDataset(data.Dataset):
     def __init__(self,
@@ -36,7 +38,9 @@ def init():
     model_path = Model.get_model_path(os.getenv('AZUREML_MODEL_DIR').split('/')[-2])
     model = torch.load(model_path)
 
-def run(df):
+def run(raw_data):
+    raw_data = json.loads(raw_data)
+    df = pd.DataFrame(raw_data['data'],columns=['split','class','image_id'])
     trans = A.Compose([
                       A.Resize(256,256),
                       A.CenterCrop(224,224),
