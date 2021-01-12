@@ -11,6 +11,8 @@ from torch.utils import data
 import cv2
 import os
 import pandas as pd
+from azureml.core.model import Model
+import torch
 
 class ImageDataset(data.Dataset):
     def __init__(self,
@@ -19,12 +21,13 @@ class ImageDataset(data.Dataset):
                  transform=None):
         assert mode in ['train','val']
         self.transform = transform
-        self.df = df
+        self.df = df[df.split == mode]
+        self.mode = mode
     
     def __getitem__(self,index):
         row = self.df.iloc[index]
-        split,cls,image_id = row['split'],row['class'],row['image_id']
-        path = os.path.join(split,cls,image_id)
+        cls,image_id = row['class'],row['image_id']
+        path = os.path.join(self.mode,cls,image_id)
         image = cv2.imread(path)
         if self.transform is not None:
             image = self.transform(image=image)
@@ -80,6 +83,16 @@ def main():
                       ToTensor()])
     dataset = ImageDataset(df,'val',trans)
     dl = data.DataLoader(dataset,batch_size=env.batch_size)
+    print('successfully build dl')
+    model = Model(name='pytorch_model.pt',
+                  version='9')
+    model_path = Model.get_model_path(model_nam=model.name,
+                                      version=model.version,
+                                      _workspace=ws)
+    model = torch.load(model_path)
+    print('model loaded')
+    for image in dl:
+        print(model(image))
 
     try:
         preds = aks_service.run(dl)
@@ -91,3 +104,19 @@ def main():
 if __name__ == '__main__':
     main()
     #%%
+#from azureml.core import Workspace
+#from azureml.core.webservice import AksWebservice
+#ws = Workspace.get(name='aml-workspace',
+#                   subscription_id='64c727c2-4f98-4ef1-a45f-09eb33c1bd59',
+#                   resource_group='aml-resource-group')
+#service = AksWebservice(ws,'pytorch1')
+#%%
+#from azureml.core.model import Model
+#import torch
+#model = Model(name='pytorch_model.pt',
+#              version='9',
+#              workspace=ws)
+#model_path = Model.get_model_path(model_name=model.name,
+#                                  version=model.version,
+#                                  _workspace=ws)
+#model = torch.load(model_path)
