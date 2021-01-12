@@ -46,7 +46,7 @@ variables:
   - name: CREATE_NEW_ENV_SCORING
     value: 'false'
   - name: AKS_SERVICE_NAME
-    value: pytorch1
+    value: pytorch2
   - name: BATCH_SIZE
     value: 8 
   - name: CONDA_DEPENDENCIES_SCORING
