@@ -85,8 +85,9 @@ def main():
     dl = data.DataLoader(dataset,batch_size=env.batch_size)
     print('successfully build dl')
     model = Model(name='pytorch_model.pt',
-                  version='9')
-    model_path = Model.get_model_path(model_nam=model.name,
+                  version='9',
+                  workspace=ws)
+    model_path = Model.get_model_path(model_name=model.name,
                                       version=model.version,
                                       _workspace=ws)
     model = torch.load(model_path)
