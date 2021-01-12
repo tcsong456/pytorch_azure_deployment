@@ -54,11 +54,13 @@ def main():
         preds = aks_service.run(json_data)
 #        preds = json.loads(preds)
         preds = pd.DataFrame(preds,columns=['chicken','turkey'])
+        print(preds)
         preds.to_csv('preds.csv',index=False)
-        preds.upload_files(files=['preds.csv'],
-                           target_path='pytorch',
-                           show_progress=True,
-                           overwrite=True)
+        print('successfully saved dataframe')
+        datastore.upload_files(files=['preds.csv'],
+                               target_path='pytorch',
+                               show_progress=True,
+                               overwrite=True)
     except Exception as error:
         print(error)
         exit(1)
