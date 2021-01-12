@@ -56,4 +56,4 @@ stages:
              inlineScript: |
                set -e
                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-               python -m webservice_test
+               python -m webservice_test --input_datapath 'pytorch'

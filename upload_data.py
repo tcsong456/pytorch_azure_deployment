@@ -24,17 +24,6 @@ def download_data():
 
     # delete zip file
     os.remove(data_file)
-
-    images = {}
-    for split in ['val']:
-        for cls in ['chickens','turkeys']:
-            path = os.path.join(data_dir,split,cls,'*')
-            for p in glob(path):
-                img = cv2.imread(p)
-                img_id = p.split('\\')[-1]
-                images[img_id] = img
-    
-    hkl.dump(images,'image_dict.hkl')
     
     return data_dir
 
