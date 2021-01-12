@@ -8,6 +8,7 @@ from torch.utils import data
 import cv2
 import json
 import pandas as pd
+from azureml.core import Dataset,Workspace
 
 class ImageDataset(data.Dataset):
     def __init__(self,
@@ -41,6 +42,15 @@ def init():
 def run(raw_data):
     raw_data = json.loads(raw_data)
     df = pd.DataFrame(raw_data['data'],columns=['split','class','image_id'])
+    ws = Workspace.get(name='aml-workspace',
+                       resource_group='aml-resource-group',
+                       subscription='64c727c2-4f98-4ef1-a45f-09eb33c1bd59')
+    datastore = ws.get_default_datastore()
+    dataset = Dataset.File.from_files(path=(datastore,'pytorch'))
+    df = dataset.download('.',overwrite=True)
+    if not os.path.exists('train') or not os.path.exists('val'):
+        raise FileNotFoundError('train or val or both are not found on local drive')
+    
     trans = A.Compose([
                       A.Resize(256,256),
                       A.CenterCrop(224,224),

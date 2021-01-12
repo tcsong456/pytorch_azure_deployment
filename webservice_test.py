@@ -33,8 +33,6 @@ def main():
     datastore = use_or_create_datastore(ws = ws)
     dataset = Dataset.File.from_files(path=(datastore,data_path))
     df = dataset.download('.',overwrite=True)
-    if not os.path.exists('train') or not os.path.exists('val'):
-        raise FileNotFoundError('train or val or both are not found on local drive')
     
     info = {col:[] for col in ['split','class','image_id']}
     for path in df:
@@ -64,4 +62,4 @@ if __name__ == '__main__':
     main()
     #%%
 
-
+service.get_logs()
