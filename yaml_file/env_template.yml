@@ -44,7 +44,7 @@ variables:
   - name: SRC_MODEL_NAME
     value: 'src_pytorch_model.pt'
   - name: CREATE_NEW_ENV_SCORING
-    value: 'false'
+    value: 'true'
   - name: AKS_SERVICE_NAME
     value: pytorch2
   - name: BATCH_SIZE
