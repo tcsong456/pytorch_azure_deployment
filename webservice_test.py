@@ -54,6 +54,7 @@ def main():
     try:
         preds = aks_service.run(json_data)
         print(preds)
+        
     except Exception as error:
         print(error)
         exit(1)
@@ -61,4 +62,12 @@ def main():
 if __name__ == '__main__':
     main()
     #%%
-
+#d = json.dumps({'data':c})
+#d = json.loads(d)
+#d = pd.DataFrame(d['data'],columns=['chiken','turkey'])
+#d.to_csv('df.csv',index=False)
+#datastore = ws.get_default_datastore()
+#datastore.upload_files(files=['df.csv'],
+#                       target_path='pytorch',
+#                       show_progress=True,
+#                       overwrite=True)
