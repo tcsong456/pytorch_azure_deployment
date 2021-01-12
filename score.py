@@ -69,7 +69,6 @@ def run(raw_data):
     result = None
     for image in dl:
         preds = model(image)
-        print(preds)
         preds = preds.data.numpy()
         result = preds if result is None else np.vstack([result,preds])
     result = [[str(row[0]),str(row[1])] for row in result]

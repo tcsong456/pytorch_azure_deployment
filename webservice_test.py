@@ -5,7 +5,6 @@ from env_variables import ENV
 from utils import create_or_use_workspace,use_or_create_datastore
 import json
 import argparse
-import os
 import pandas as pd
 
 def main():
@@ -53,8 +52,14 @@ def main():
 
     try:
         preds = aks_service.run(json_data)
-        print(preds)
-        
+        print(type(preds))
+        preds = json.loads(preds)
+        preds = pd.DataFrame(preds,columns=['chicken','turkey'])
+        preds.to_csv('preds.csv',index=False)
+        preds.upload_files(files=['preds.csv'],
+                           target_path='pytorch',
+                           show_progress=True,
+                           overwrite=True)
     except Exception as error:
         print(error)
         exit(1)
@@ -62,12 +67,4 @@ def main():
 if __name__ == '__main__':
     main()
     #%%
-#d = json.dumps({'data':c})
-#d = json.loads(d)
-#d = pd.DataFrame(d['data'],columns=['chiken','turkey'])
-#d.to_csv('df.csv',index=False)
-#datastore = ws.get_default_datastore()
-#datastore.upload_files(files=['df.csv'],
-#                       target_path='pytorch',
-#                       show_progress=True,
-#                       overwrite=True)
+
