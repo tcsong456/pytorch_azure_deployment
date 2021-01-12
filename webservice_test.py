@@ -52,8 +52,7 @@ def main():
 
     try:
         preds = aks_service.run(json_data)
-        print(type(preds))
-        preds = json.loads(preds)
+#        preds = json.loads(preds)
         preds = pd.DataFrame(preds,columns=['chicken','turkey'])
         preds.to_csv('preds.csv',index=False)
         preds.upload_files(files=['preds.csv'],
