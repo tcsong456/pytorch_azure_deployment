@@ -1,17 +1,18 @@
 from azureml.core.authentication import ServicePrincipalAuthentication
 from azureml.core.webservice import AksWebservice
+from azureml.core import Dataset
 from env_variables import ENV
 from utils import create_or_use_workspace,use_or_create_datastore
 import json
 import argparse
 import albumentations as A
 from albumentations.pytorch import ToTensor
-from torch.utils.data import Dataset,DataLoader
+from torch.utils import data
 import cv2
 import os
 import pandas as pd
 
-class Dataset(Dataset):
+class ImageDataset(data.Dataset):
     def __init__(self,
                  df,
                  mode='train',
@@ -77,8 +78,8 @@ def main():
                       A.CenterCrop(224,224),
                       A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
                       ToTensor()]
-    dataset = Dataset(df,'val',trans)
-    dl = DataLoader(dataset,batch_size=env.batch_size)
+    dataset = ImageDataset(df,'val',trans)
+    dl = data.DataLoader(dataset,batch_size=env.batch_size)
 
     try:
         preds = aks_service.run(dl)
