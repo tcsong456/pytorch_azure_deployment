@@ -50,6 +50,6 @@ variables:
   - name: BATCH_SIZE
     value: 8 
   - name: CONDA_DEPENDENCIES_SCORING
-    value: yaml/scoring_dependencies.yml
+    value: yaml_file/scoring_dependencies.yml
   - name: CONDA_DEPENDENCIES
-    value: yaml/conda_dependencies.yml
+    value: yaml_file/conda_dependencies.yml
