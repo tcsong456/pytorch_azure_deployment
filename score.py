@@ -9,6 +9,7 @@ import cv2
 import json
 import pandas as pd
 from azureml.core import Dataset,Workspace
+from azureml.core.authentication import ServicePrincipalAuthentication
 
 class ImageDataset(data.Dataset):
     def __init__(self,
@@ -40,11 +41,16 @@ def init():
     model = torch.load(model_path)
 
 def run(raw_data):
+    print('running inference!')
     raw_data = json.loads(raw_data)
     df = pd.DataFrame(raw_data['data'],columns=['split','class','image_id'])
+    auth = ServicePrincipalAuthentication(tenant_id='de4772cb-0d03-4f05-a9ad-e2581268c37c',
+                                          service_principal_id='de6944f7-6f0c-4c66-9e41-ce53650629d6',
+                                          service_principal_password='S0eGD_d~65n.hsUmm~scgS.ctp~F3m82ey')
     ws = Workspace.get(name='aml-workspace',
                        resource_group='aml-resource-group',
-                       subscription_id='64c727c2-4f98-4ef1-a45f-09eb33c1bd59')
+                       subscription_id='64c727c2-4f98-4ef1-a45f-09eb33c1bd59',
+                       auth=auth)
     datastore = ws.get_default_datastore()
     dataset = Dataset.File.from_files(path=(datastore,'pytorch'))
     dataset.download('.',overwrite=True)
@@ -69,3 +75,4 @@ def run(raw_data):
     return result
     
     #%%
+service.get_logs()
