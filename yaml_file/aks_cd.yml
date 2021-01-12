@@ -1,0 +1,59 @@
+pr: none
+trigger: none
+
+resources:
+  containers:
+    - container: mlops
+      image: andysong199086/pytorch_deployment:2.0
+    - container: mlops_pytorch
+      image: andysong199086/pytorch_deployment:1.0
+  pipelines:
+    - pipeline: pytorch_pipline
+      source: pytorch_prc_deployment
+      trigger:
+        branches:
+          include:
+          - main
+
+variables:
+  - group: aml-pytorch-group
+  - template: env_template.yml
+
+stages:
+  - stage: 'AKS_DEPLOYMENT'
+    displayName: 'aks deployment'
+    jobs:
+      - job: 'Deploy_AKS'
+        displayName: 'Deploy AKS SERVICE'
+        container: mlops
+        timeoutInMinutes: 0
+        steps:
+          - task: AzureCLI@1
+            displayName: 'deploying aks'
+            inputs:
+              azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+              scriptLocation: inlineScript
+              workingDirectory: $(Build.SourcesDirectory)
+              inlineScript: |
+                set -e
+                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                python -m deployment --model_name 'pytorch_model.pt'
+  - stage: 'WEBSERVICE'
+    displayName: 'run webservice'
+    condition: succeeded()
+    jobs:
+     - job: 'Webservice_Test'
+       displayName: 'webservice test'
+       container: mlops_pytorch
+       timeoutInMinutes: 0
+       steps:
+         - task: AzureCLI@1
+           displayName: 'testing aks service'
+           inputs:
+             azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+             scriptLocation: inlineScript
+             workingDirectory: $(Build.SourcesDirectory)
+             inlineScript: |
+               set -e
+               export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+               python -m webservice_test

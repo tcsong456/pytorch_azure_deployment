@@ -1,0 +1,10 @@
+name: pytorch_ci_dependencies
+dependencies:
+  - python=3.7.*
+  - pip
+  
+  - pip:
+    - azureml-sdk
+    - azure-storage-blob
+    - azure-cli==2.3.*
+

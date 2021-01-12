@@ -1,0 +1,15 @@
+{
+ "data_upload_container_name":"pytorchdeployment",
+ "data_upload_storage_account":"diabetesamlsa",
+ "data_upload_storage_key_access":"owh8UCpsBmVxpo1KFDPlUuWqYPVZjob0G67cJwSXtqDdjK2oZaZAKL3KwFrJC/7jFNPaRn+4Ua0ATkrZFSo5dg==",
+ "tenant_id":"de4772cb-0d03-4f05-a9ad-e2581268c37c",
+ "service_principal_id":"de6944f7-6f0c-4c66-9e41-ce53650629d6",
+ "service_principal_password":"S0eGD_d~65n.hsUmm~scgS.ctp~F3m82ey",
+ "workspace_name":"aml-workspace",
+ "subscription_id":"64c727c2-4f98-4ef1-a45f-09eb33c1bd59",
+ "resource_group":"aml-resource-group",
+ "registration":{"params":["lr",
+                           "momentum"],
+                  "tags":["best_val_acc"]},
+  "aad_secret":"S0eGD_d~65n.hsUmm~scgS.ctp~F3m82ey"
+     }

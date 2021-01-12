@@ -1,0 +1,13 @@
+name: 'scoring_conda_dependencies'
+dependencies:
+  - python=3.7.*
+  - pandas
+  - pip
+  
+  - pip:
+    - torch
+    - albumentations
+    - azureml-sdk
+    - azure-cli
+    - torchvision
+    - opencv-python-headless

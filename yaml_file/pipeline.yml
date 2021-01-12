@@ -1,0 +1,61 @@
+resources:
+  containers:
+    - container: mlops
+      image: andysong199086/pytorch_deployment:2.0
+
+variables:
+  - group: aml-pytorch-group
+  - template: env_template.yml
+  - name: BUILD_ID 
+    value: '$(BUILD.BUILDID)'
+  - name: BUILD_URL
+    value: '$(SYSTEM.COLLECTIONURI)$(SYSTEM.TEAMPROJECT)/_build/results?buildId=$(BUILD.BUILDID)'
+
+pool:
+  vmImage: ubuntu-latest
+
+pr: none
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+  - stage: 'MODEL_CI'
+    displayName: 'MODEL CI'
+    jobs:
+      - job: 'BUILD_MODEL_CI'
+        displayName: 'BUILD MODEL CI'
+        container: mlops
+        timeoutInMinutes: 0
+        steps:
+          - task: AzureCLI@1
+            displayName: 'building model pipeline'
+            inputs:
+              azureSubscription: $(WORKSPACE_SVC_CONNECTION)
+              workingDirectory: $(Build.SourcesDirectory)
+              scriptLocation: inlineScript
+              inlineScript: |
+                set -e
+                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                python -m prc_pipeline
+  - stage: 'TRIGGER_PIPELINE'
+    displayName: 'trigger pipeline'
+    condition: succeeded()
+    jobs:
+      - job: 'RUN_PIPELINE'
+        displayName: 'running pipeline'
+        condition: and(succeeded(),eq(variables['auto-trigger-pipeline'],'true'))
+        container: mlops
+        timeoutInMinutes: 0
+        steps:
+          - task: AzureCLI@1
+            displayName: 'run the pipeline'
+            inputs:
+              azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+              scriptLocation: inlineScript
+              workingDirectory: '$(Build.SourcesDirectory)'
+              inlineScript: |
+                set -e
+                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                python -m run_pipeline

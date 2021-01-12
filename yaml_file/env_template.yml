@@ -1,0 +1,49 @@
+variables:
+  - name: EXPERIMENT_NAME
+    value: PYTORCH_DEPLOYMENT
+  - name: PIPELINE_NAME
+    value: pytorch_pipe
+  - name: CONDA_DEPENDENCIES
+    value: yaml_file/conda_dependencies.yml
+  - name: VM_SIZE_CPU
+    value: STANDARD_DS2_V2
+  - name: VM_SIZE_GPU
+    value: STANDARD_NC6
+  - name: VM_SIZE_CPU_SCORING
+    value: STANDARD_DS2_V2
+  - name: VM_SIZE_GPU_SCORING
+    value: STANDARD_NC6
+  - name: VM_PRIORITY
+    value: lowpriority
+  - name: MAX_EPOCHS
+    value: 10
+  - name: AUTO-TRIGGER-PIPELINE
+    value: 'true'
+  - name: MODEL_NAME
+    value: 'pytorch_model.pt'
+  - name: SCORING_FILE_NAME
+    value: result.csv
+  - name: LOSS_FILE_NAME
+    value: loss.txt
+  - name: ENV_NAME
+    value: pytorch-gpu-env
+  - name: DATASTORE_NAME
+    value: pytorch_datastore
+  - name: CREATE_NEW_ENV
+    value: 'true'
+  - name: MAX_TOTAL_RUNS
+    value: 15
+  - name: MAX_CONCURRENT_RUNS
+    value: 3
+  - name: MAX_DURATION_MINUTES
+    value: 15
+  - name: HDS_PIPELINE_NAME
+    value: 'pytorch_hds_pipeline'
+  - name: SRC_MODEL_NAME
+    value: 'src_pytorch_model.pt'
+  - name: CREATE_NEW_ENV_SCORING
+    value: 'false'
+  - name: AKS_SERVICE_NAME
+    value: pytorch1
+  - name: BATCH_SIZE
+    value: 8 

@@ -1,0 +1,15 @@
+name: 'pytorch_conda_dependencies'
+dependencies:
+  - python=3.7.*
+  - cudatoolkit=10.0
+  - pip
+  
+  - pip:
+    - azureml-defaults
+    - torch
+    - numpy
+    - pandas
+    - torchvision
+    - future
+    - azureml-sdk
+    - azure-storage-blob
