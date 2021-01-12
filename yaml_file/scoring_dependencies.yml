@@ -2,6 +2,7 @@ name: 'scoring_conda_dependencies'
 dependencies:
   - python=3.7.*
   - pandas
+  - azureml-defaults=1.20.0
   - pip
   
   - pip:
@@ -11,4 +12,4 @@ dependencies:
     - azure-cli
     - torchvision
     - opencv-python-headless
-    - azureml-defaults
+    

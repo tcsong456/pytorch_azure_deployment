@@ -65,3 +65,5 @@ def main():
 if __name__ == '__main__':
     main()
 #%%
+#service = AksWebservice(ws,'pytorch2')
+#service.get_logs()
