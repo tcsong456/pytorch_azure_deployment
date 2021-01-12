@@ -68,11 +68,13 @@ def run(raw_data):
     
     result = None
     for image in dl:
+        print(image)
         preds = model(image)
-        preds = preds.data.numpy()
-        result = preds if result is None else np.vstack([result,preds])
+        print(preds)
+#        preds = preds.data.numpy()
+#        result = preds if result is None else np.vstack([result,preds])
     
-    return result
+#    return result
     
     #%%
 #service.get_logs()
