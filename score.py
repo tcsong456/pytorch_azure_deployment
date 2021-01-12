@@ -75,4 +75,4 @@ def run(raw_data):
     return result
     
     #%%
-service.get_logs()
+#service.get_logs()
