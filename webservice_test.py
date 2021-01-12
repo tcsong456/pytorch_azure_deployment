@@ -50,7 +50,7 @@ def main():
     input_data = []
     for _,row in df.iterrows():
         input_data.append([row['split'],row['class'],row['image_id']])
-    json_data = json.dump({'data':input_data})
+    json_data = json.dumps({'data':input_data})
     json_data = bytes(json_data,encoding='utf-8')
 
     try:
