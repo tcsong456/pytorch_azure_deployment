@@ -27,6 +27,8 @@ variables:
     value: loss.txt
   - name: ENV_NAME
     value: pytorch-gpu-env
+  - name: ENV_NAME_SCORING
+    value: pytorch-env-scoring
   - name: DATASTORE_NAME
     value: pytorch_datastore
   - name: CREATE_NEW_ENV
@@ -42,8 +44,12 @@ variables:
   - name: SRC_MODEL_NAME
     value: 'src_pytorch_model.pt'
   - name: CREATE_NEW_ENV_SCORING
-    value: 'false'
+    value: 'true'
   - name: AKS_SERVICE_NAME
     value: pytorch1
   - name: BATCH_SIZE
     value: 8 
+  - name: CONDA_DEPENDENCIES_SCORING
+    value: yaml/scoring_dependencies.yml
+  - name: CONDA_DEPENDENCIES
+    value: yaml/conda_dependencies.yml

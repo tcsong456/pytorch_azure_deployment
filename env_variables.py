@@ -23,6 +23,7 @@ class ENV:
     scoring_file_name: Optional[str] = os.environ.get('SCORING_FILE_NAME')
     loss_file_name: Optional[str] = os.environ.get('LOSS_FILE_NAME')
     env_name: Optional[str] = os.environ.get('ENV_NAME')
+    env_name_scoring: Optional[str] = os.environ.get('ENV_NAME_SCORING')
     datastore_name: Optional[str] = os.environ.get('DATASTORE_NAME')
     create_new_env: Optional[str] = os.environ.get('CREATE_NEW_ENV')
     create_new_env_scoring: Optional[str] = os.environ.get('CREATE_NEW_ENV_SCORING')
@@ -34,3 +35,5 @@ class ENV:
     src_model_name: Optional[str] = os.environ.get('SRC_MODEL_NAME')
     aks_service_name: Optional[str] = os.environ.get('AKS_SERVICE_NAME')
     batch_size: Optional[int] = int(os.environ.get('BATCH_SIZE'))
+    conda_dependencies_scoring: Optional[str] = os.environ.get('CONDA_DEPENDENCIES_SCORING')
+    conda_dependencies: Optional[str] = os.environ.get('CONDA_DEPENDENCIES')

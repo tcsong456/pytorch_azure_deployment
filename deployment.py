@@ -32,9 +32,9 @@ def main():
                       )
     
     environment = use_or_create_environment(ws=ws,
-                                            env_name=env.env_name,
+                                            env_name=env.env_name_scoring,
                                             create_new_env=env.create_new_env_scoring,
-                                            conda_dependencies=env.conda_dependencies)
+                                            conda_dependencies=env.conda_dependencies_scoring)
             
     try:
         aks_compute = AksCompute(ws,env.aks_service_name)

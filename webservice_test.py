@@ -5,37 +5,8 @@ from env_variables import ENV
 from utils import create_or_use_workspace,use_or_create_datastore
 import json
 import argparse
-import albumentations as A
-from albumentations.pytorch import ToTensor
-from torch.utils import data
-import cv2
 import os
 import pandas as pd
-from azureml.core.model import Model
-import torch
-
-class ImageDataset(data.Dataset):
-    def __init__(self,
-                 df,
-                 mode='train',
-                 transform=None):
-        assert mode in ['train','val']
-        self.transform = transform
-        self.df = df[df.split == mode]
-        self.mode = mode
-    
-    def __getitem__(self,index):
-        row = self.df.iloc[index]
-        cls,image_id = row['class'],row['image_id']
-        path = os.path.join(self.mode,cls,image_id)
-        image = cv2.imread(path)
-        if self.transform is not None:
-            image = self.transform(image=image)
-        
-        return image['image']
-    
-    def __len__(self):
-        return len(self.df)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -76,27 +47,8 @@ def main():
     del_index = df[df.image_id == 'desktop.ini'].index[0]
     df.drop([del_index],inplace=True)
 
-    trans = A.Compose([
-                      A.Resize(256,256),
-                      A.CenterCrop(224,224),
-                      A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-                      ToTensor()])
-    dataset = ImageDataset(df,'val',trans)
-    dl = data.DataLoader(dataset,batch_size=env.batch_size)
-    print('successfully build dl')
-    model = Model(name='pytorch_model.pt',
-                  version='9',
-                  workspace=ws)
-    model_path = Model.get_model_path(model_name=model.name,
-                                      version=model.version,
-                                      _workspace=ws)
-    model = torch.load(model_path)
-    print('model loaded')
-    for image in dl:
-        print(model(image))
-
     try:
-        preds = aks_service.run(dl)
+        preds = aks_service.run(df)
         print(preds)
     except Exception as error:
         print(error)
