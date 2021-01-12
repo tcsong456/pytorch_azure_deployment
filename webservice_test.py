@@ -65,7 +65,6 @@ def main():
     info = {col:[] for col in ['split','class','image_id']}
     for path in df:
         split_info = path.split('/')
-        print(split_info)
         split,cls,image_id = split_info[-3],split_info[-2],split_info[-1]
         info['split'].append(split)
         info['class'].append(cls)
@@ -74,11 +73,11 @@ def main():
     del_index = df[df.image_id == 'desktop.ini'].index[0]
     df.drop([del_index],inplace=True)
 
-    trans = A.Compose[
+    trans = A.Compose([
                       A.Resize(256,256),
                       A.CenterCrop(224,224),
                       A.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-                      ToTensor()]
+                      ToTensor()])
     dataset = ImageDataset(df,'val',trans)
     dl = data.DataLoader(dataset,batch_size=env.batch_size)
 
