@@ -64,6 +64,7 @@ def main():
     
     info = {col:[] for col in ['split','class','image_id']}
     for path in df:
+        print(path)
         split_info = path.split('\\')
         split,cls,image_id = split_info[-3],split_info[-2],split_info[-1]
         info['split'].append(split)
@@ -91,4 +92,3 @@ def main():
 if __name__ == '__main__':
     main()
     #%%
-
