@@ -4,6 +4,7 @@ from azureml.core.model import InferenceConfig,Model
 from azureml.core.webservice import AksWebservice
 from azureml.core.compute import AksCompute,ComputeTarget
 from azureml.exceptions import ComputeTargetException
+from azureml.core import Dataset
 from env_variables import ENV
 from utils import *
 import argparse
@@ -43,6 +44,10 @@ def main():
                                            name=env.aks_service_name,
                                            provisioning_configuration=aks_config)
         aks_compute.wait_for_completion(show_output=True)
+    
+    datastore = ws.get_default_datastore()
+    dataset = Dataset.File.from_files(path=(datastore,'pytorch'))
+    dataset.download('.',overwrite=True)
     
     inference_config = InferenceConfig(entry_script='score.py',
                                        environment=environment,
