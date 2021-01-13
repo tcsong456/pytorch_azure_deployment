@@ -38,16 +38,16 @@ stages:
                 set -e
                 export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
                 python -m deployment --model_name 'pytorch_model.pt'
-         - task: AzureCLI@1
-           displayName: 'testing aks service'
-           inputs:
-             azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
-             scriptLocation: inlineScript
-             workingDirectory: $(Build.SourcesDirectory)
-             inlineScript: |
-               set -e
-               export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-               python -m webservice_test --input_datapath 'pytorch'
+          - task: AzureCLI@1
+            displayName: 'testing aks service'
+            inputs:
+              azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+              scriptLocation: inlineScript
+              workingDirectory: $(Build.SourcesDirectory)
+              inlineScript: |
+                set -e
+                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                python -m webservice_test --input_datapath 'pytorch'
         
         
 #  - stage: 'WEBSERVICE'
