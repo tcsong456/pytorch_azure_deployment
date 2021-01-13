@@ -25,7 +25,7 @@ stages:
     jobs:
       - job: 'Deploy_AKS'
         displayName: 'Deploy AKS SERVICE'
-        container: mlops
+        container: mlops_pytorch
         timeoutInMinutes: 0
         steps:
           - task: AzureCLI@1
@@ -38,15 +38,6 @@ stages:
                 set -e
                 export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
                 python -m deployment --model_name 'pytorch_model.pt'
-  - stage: 'WEBSERVICE'
-    displayName: 'run webservice'
-    condition: succeeded()
-    jobs:
-     - job: 'Webservice_Test'
-       displayName: 'webservice test'
-       container: mlops_pytorch
-       timeoutInMinutes: 0
-       steps:
          - task: AzureCLI@1
            displayName: 'testing aks service'
            inputs:
@@ -57,3 +48,24 @@ stages:
                set -e
                export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
                python -m webservice_test --input_datapath 'pytorch'
+        
+        
+#  - stage: 'WEBSERVICE'
+#    displayName: 'run webservice'
+#    condition: succeeded()
+#    jobs:
+#     - job: 'Webservice_Test'
+#       displayName: 'webservice test'
+#       container: mlops_pytorch
+#       timeoutInMinutes: 0
+#       steps:
+#         - task: AzureCLI@1
+#           displayName: 'testing aks service'
+#           inputs:
+#             azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+#             scriptLocation: inlineScript
+#             workingDirectory: $(Build.SourcesDirectory)
+#             inlineScript: |
+#               set -e
+#               export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+#               python -m webservice_test --input_datapath 'pytorch'
