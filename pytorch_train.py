@@ -178,7 +178,9 @@ def main():
     model = fine_tune_model(args.num_epochs, args.data_path,
                             args.learning_rate, args.momentum)
     os.makedirs(args.output_dir, exist_ok=True)
-    torch.save(model, os.path.join(args.output_dir, args.model_name))
+    model_path = os.path.join(args.output_dir, args.model_name)
+    torch.save(model, model_path)
+    print(f'saveing to {model_path}')
 
 if __name__ == "__main__":
     main()

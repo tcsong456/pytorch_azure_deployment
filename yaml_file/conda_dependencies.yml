@@ -13,3 +13,4 @@ dependencies:
     - future
     - azureml-sdk
     - azure-storage-blob
+    - nltk

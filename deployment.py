@@ -45,10 +45,6 @@ def main():
                                            provisioning_configuration=aks_config)
         aks_compute.wait_for_completion(show_output=True)
     
-    datastore = ws.get_default_datastore()
-    dataset = Dataset.File.from_files(path=(datastore,'pytorch'))
-    dataset.download('.',overwrite=True)
-    
     inference_config = InferenceConfig(entry_script='score.py',
                                        environment=environment,
                                        source_directory='.')

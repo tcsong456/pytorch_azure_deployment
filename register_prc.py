@@ -61,6 +61,7 @@ def main():
             print('could not find key in tags')
     
     model_path = os.path.join(step_input,model_name)
+    print(f'loading from {model_path}')
     model = torch.load(model_path)
     
     if model is not None:
